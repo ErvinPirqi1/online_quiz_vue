@@ -119,6 +119,12 @@ export default {
       }
     },
     async submitQuestions() {
+
+              const token = localStorage.getItem('token');
+        if (!token) {
+          alert('You must be logged in to create a quiz.');
+          return;
+        }
       if (!this.quizId) {
         console.error("Quiz ID is missing!", this.$route.params);
         alert("Quiz ID is required.");
@@ -131,7 +137,7 @@ export default {
           { questions: this.questions },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Ensure token is stored properly
+              Authorization: `Bearer ${token}`,
             },
           }
         );

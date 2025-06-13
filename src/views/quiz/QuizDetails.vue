@@ -45,18 +45,19 @@
                     <i>{{ answer.isCorrect ? "✅" : "❌" }}</i>
                   </li>
                 </ul>
-
-                <RouterLink
-                  :to="`/quiz/editQuestion/${question.id}`"
-                  class="btn btn-primary"
-                >
-                  Modify Question
-                </RouterLink>
               </div>
             </div>
           </div>
 
-          <div class="text-end mt-4">
+          <!-- Buttons Inline -->
+          <div class="d-flex justify-content-between mt-4">
+            <RouterLink
+              :to="`/quiz/edit/${quiz.id}`"
+              class="btn btn-primary"
+            >
+              Edit Quiz
+            </RouterLink>
+
             <RouterLink
               :to="`/quiz/createQuestion/${quiz.id}`"
               class="btn btn-success"
@@ -74,9 +75,9 @@
       <div v-else class="text-center mt-5">
         <h3 class="text-danger">Quiz not found or failed to load.</h3>
       </div>
-  </template>
-</DefaultLayout>
-  </template>
+    </template>
+  </DefaultLayout>
+</template>
 
 <script>
 import axios from "axios";
@@ -97,9 +98,16 @@ export default {
   methods: {
     async fetchQuizDetails() {
       try {
-        console.log("Fetching quiz details for ID:", this.quizId);
-        const response = await axios.get(`/api/quizzes/${this.quizId}/details`);
-        console.log("Quiz details response:", response.data);
+        const token = localStorage.getItem("token");
+        if (!token) {
+          alert("You must be logged in to view quiz details.");
+          this.loading = false;
+          return;
+        }
+
+        const response = await axios.get(`/api/quizzes/${this.quizId}/details`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         this.quiz = response.data.quiz || null;
         this.questions = response.data.questions || [];

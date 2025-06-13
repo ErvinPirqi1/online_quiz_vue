@@ -34,7 +34,17 @@ const routes = [
     component: QuizCreateQuestion,
     props: true,
   },
-
+  {
+    path: "/quiz/CreateQuiz",
+    name: "CreateQuiz",
+    component: QuizCreatePage,
+    props: true,
+  },
+  {
+    path: "/quiz/edit/:id",
+    name: "EditQuiz",
+    component: QuizEditPage,
+  },
   {
     path: "/about",
     name: "About",

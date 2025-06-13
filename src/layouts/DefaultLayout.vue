@@ -90,7 +90,7 @@
 
     <!-- Slider Area -->
     <section class="slider-area">
-      <div class="slider-active">
+      <div class="slider-passive">
         <div class="single-slider slider-height d-flex align-items-center">
           <div class="container">
             <div class="row">

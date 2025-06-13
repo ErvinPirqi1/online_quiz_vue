@@ -1,5 +1,6 @@
 .create-quiz {
   max-width: 800px;
+  margin: 50px auto;
 
   .card {
     border: none;
@@ -46,6 +47,7 @@
     border-color: #dc3545;
     border-radius: 5px;
     padding: 10px 20px;
+    margin-left: 10px;
   }
 
   .btn-secondary {
@@ -53,6 +55,7 @@
     border-color: #6c757d;
     border-radius: 5px;
     padding: 10px 20px;
+    margin-left: 10px;
   }
 
   .error-message {

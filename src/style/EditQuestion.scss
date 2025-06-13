@@ -1,0 +1,56 @@
+.edit-question {
+  max-width: 800px;
+  margin: 50px auto;
+
+  .card {
+    border: none;
+    border-radius: 10px;
+
+    .card-header {
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+
+      .card-title {
+        font-size: 1.8rem;
+        font-weight: 500;
+      }
+    }
+
+    .card-body {
+      padding: 30px;
+    }
+
+    .form-label {
+      font-weight: 500;
+    }
+
+    .form-control,
+    .form-select {
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .form-check-input {
+      margin-right: 5px;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+      border-radius: 5px;
+      padding: 10px 20px;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      border-color: #6c757d;
+      border-radius: 5px;
+      padding: 10px 20px;
+    }
+  }
+}

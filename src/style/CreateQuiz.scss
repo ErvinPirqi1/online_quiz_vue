@@ -1,0 +1,63 @@
+.create-quiz {
+  max-width: 800px;
+
+  .card {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+
+  .card-header {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  .card-title {
+    font-size: 1.8rem;
+    font-weight: 500;
+  }
+
+  .card-body {
+    padding: 30px;
+  }
+
+  .form-label {
+    font-weight: 500;
+  }
+
+  .form-control {
+    border-radius: 5px;
+    padding: 10px;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 5px;
+    padding: 10px 20px;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    border-radius: 5px;
+    padding: 10px 20px;
+  }
+
+  .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    border-radius: 5px;
+    padding: 10px 20px;
+  }
+
+  .error-message {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin-top: 5px;
+  }
+}

@@ -1,0 +1,108 @@
+.moving-cards-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.no-quizzes {
+  font-size: 1.2rem;
+  color: #777;
+  margin-top: 20px;
+}
+
+.carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+  position: relative;
+}
+
+.carousel {
+  display: flex;
+  gap: 40px;
+  overflow: hidden;
+  min-width: 660px;
+}
+
+.quiz-card {
+  width: 400px;
+  height: 420px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  margin: 40px;
+}
+
+.quiz-card:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.quiz-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 3px solid #007bff;
+}
+
+.quiz-card-body {
+  padding: 20px;
+  text-align: center;
+}
+
+.quiz-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.quiz-description {
+  margin: 10px 0;
+  color: #555;
+  font-size: 2rem;
+  line-height: 1.5; /* Ensures good readability */
+  max-height: 3rem; /* Reserves space for exactly 2 lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limits to 2 lines */
+  line-clamp: 2; /* Standard property for compatibility */
+  -webkit-box-orient: vertical;
+}
+
+
+.quiz-meta {
+  font-size: 1.5rem;
+  color: #777;
+}
+
+.quiz-card-footer {
+  background-color: #f8f9fa;
+  padding: 15px;
+  text-align: center;
+}
+
+.arrow-btn {
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+.arrow-btn:hover {
+  color: #0056b3;
+}
+
+.arrow-btn:disabled {
+  color: #aaa;
+  cursor: not-allowed;
+}

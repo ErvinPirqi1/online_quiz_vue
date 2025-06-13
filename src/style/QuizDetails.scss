@@ -1,0 +1,49 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.questions h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #007bff;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.list-group-item {
+  border: none;
+  padding: 10px 15px;
+}
+
+.btn-primary,
+.btn-success {
+  border-radius: 5px;
+}
+
+.text-end {
+  text-align: end;
+}
+
+.text-success {
+  font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .card-body {
+    padding: 15px;
+  }
+
+  .questions h2 {
+    font-size: 1.5rem;
+  }
+}

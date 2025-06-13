@@ -10,10 +10,16 @@ import LoginPage from "../views/Login.vue";
 import RegisterPage from "../views/Register.vue";
 import About from "../components/About.vue";
 import Contact from "../components/Contact.vue";
+import AdminPage from "../views/AdminPage.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/admin-dashboard",
+    name: "AdminPage",
+    component: AdminPage,
+  },
+  {
+  path: "/",
     name: "Home",
     component: HomePage,
   },

@@ -1,69 +1,44 @@
 <template>
   <DefaultLayout>
     <div class="container mt-5" v-if="loaded">
-      <!-- Teacher: Add Quiz button -->
-      <div v-if="role === 'ROLE_TEACHER'" class="text-center mb-4">
+
+      <!-- Add Quiz Button -->
+      <div v-if="isTeacherOrAdmin" class="text-center mb-4">
         <RouterLink to="/quiz/createQuiz" class="btn hero-btn">+ Add New Quiz</RouterLink>
       </div>
 
-      <!-- YOUR QUIZZES (Teacher) or PARTICIPATED QUIZZES (Student) -->
-      <section v-if="role === 'ROLE_TEACHER' || role === 'ROLE_STUDENT'">
-        <h2>
-          {{ role === 'ROLE_TEACHER' ? 'Your Quizzes' : 'Quizzes You Have Taken' }}
-        </h2>
+      <!-- My Quizzes (Teacher/Admin only) -->
+      <section v-if="isTeacherOrAdmin">
+        <h2>Your Quizzes</h2>
         <div class="row custom-row">
-          <div
-            v-for="quiz in yourQuizzes"
-            :key="quiz.id"
-            class="col-md-4"
-          >
-            <div class="custom-card shadow">
-              <img
-                :src="quiz.image || defaultImage"
-                alt="Quiz Image"
-                class="card-img-top"
-              />
-              <div class="card-body">
-                <h5 class="quiz-title">{{ quiz.title }}</h5>
-                <p><strong>Author:</strong> {{ quiz.createdByUsername }}</p>
-                <p><strong>Category:</strong> {{ quiz.category }}</p>
-                <p class="quiz-description">{{ quiz.description }}</p>
-              </div>
-              <div class="card-footer text-center">
-                <RouterLink :to="`/quiz/${quiz.id}`" class="btn btn-primary">Open Quiz</RouterLink>
-              </div>
-            </div>
-          </div>
+          <template v-if="myQuizzes.length > 0">
+            <QuizCard v-for="quiz in myQuizzes" :key="quiz.id" :quiz="quiz" />
+          </template>
+          <p v-else class="text-muted">You don’t have any quizzes yet. Create your first quiz!</p>
         </div>
         <hr />
       </section>
 
-      <!-- OTHER QUIZZES (Everyone sees this) -->
+      <!-- Quiz Results (Teacher/Admin/Student) -->
+      <section v-if="isTeacherOrAdmin || isStudent">
+        <h2>Quiz Results</h2>
+        <div class="row custom-row">
+          <template v-if="participatedQuizzes.length > 0">
+            <QuizCard v-for="quiz in participatedQuizzes" :key="quiz.id" :quiz="quiz" />
+          </template>
+          <p v-else class="text-muted">You haven’t taken any quizzes yet. Take your first quiz!</p>
+        </div>
+        <hr />
+      </section>
+
+      <!-- Other Quizzes (Everyone) -->
       <section>
         <h2>Other Quizzes</h2>
         <div class="row custom-row">
-          <div
-            v-for="quiz in otherQuizzes"
-            :key="quiz.id"
-            class="col-md-4"
-          >
-            <div class="custom-card shadow">
-              <img
-                :src="quiz.image || defaultImage"
-                alt="Quiz Image"
-                class="card-img-top"
-              />
-              <div class="card-body">
-                <h5 class="quiz-title">{{ quiz.title }}</h5>
-                <p><strong>Author:</strong> {{ quiz.createdByUsername }}</p>
-                <p><strong>Category:</strong> {{ quiz.category }}</p>
-                <p class="quiz-description">{{ quiz.description }}</p>
-              </div>
-              <div class="card-footer text-center">
-                <RouterLink :to="`/quiz/${quiz.id}`" class="btn btn-primary">Open Quiz</RouterLink>
-              </div>
-            </div>
-          </div>
+          <template v-if="otherQuizzes.length > 0">
+            <QuizCard v-for="quiz in otherQuizzes" :key="quiz.id" :quiz="quiz" />
+          </template>
+          <p v-else class="text-muted">There are no quizzes available at the moment.</p>
         </div>
       </section>
     </div>
@@ -74,51 +49,80 @@
   </DefaultLayout>
 </template>
 
+
 <script>
 import axios from 'axios';
-import { useAuthStore } from '../../stores/auth';  // adjust path if needed
+import { useAuthStore } from '../../stores/auth';
 import DefaultLayout from '../../layouts/DefaultLayout.vue';
-import defaultImage from '../../assets/img/quiz_background.jpg';
+import QuizCard from '../../components/QuizCard.vue';
 
 export default {
   name: 'QuizList',
-  components: { DefaultLayout },
+  components: { DefaultLayout, QuizCard },
   data() {
     return {
-      yourQuizzes: [],
+      myQuizzes: [],
+      participatedQuizzes: [],
       otherQuizzes: [],
       loaded: false,
-      defaultImage,
     };
   },
   computed: {
     role() {
-      const authStore = useAuthStore();
-      return authStore.userRole;  // directly get role from Pinia store
+      return useAuthStore().userRole;
+    },
+    token() {
+      return useAuthStore().token;
+    },
+    isTeacherOrAdmin() {
+      return this.role === 'TEACHER' || this.role === 'ADMIN';
+    },
+    isStudent() {
+      return this.role === 'STUDENT';
     }
   },
   methods: {
     async fetchQuizzes() {
       try {
-        console.log('Fetching quizzes for role:', this.role);
+        const headers = {
+          Authorization: `Bearer ${this.token}`
+        };
 
-        if (!this.role) {
-          const response = await axios.get('/api/quizzes');
-          this.otherQuizzes = response.data;
-        } else if (this.role === 'TEACHER') {
-          const yourRes = await axios.get('/api/quizzes/my');
-          const otherRes = await axios.get('/api/quizzes/other');
-          this.yourQuizzes = yourRes.data;
-          this.otherQuizzes = otherRes.data;
-        } else if (this.role === 'ROLE_STUDENT') {
-          const participatedRes = await axios.get('/api/quizzes/participated');
-          const otherRes = await axios.get('/api/quizzes/other');
-          this.yourQuizzes = participatedRes.data;
-          this.otherQuizzes = otherRes.data;
+        const fetches = [];
+
+        if (this.isTeacherOrAdmin) {
+          fetches.push(
+            axios.get('/api/quizzes/my1', { headers }),
+            axios.get('/api/quizzes/participated1', { headers }),
+            axios.get('/api/quizzes/other1', { headers })
+          );
+        } else if (this.isStudent) {
+          fetches.push(
+            axios.get('/api/quizzes/participated', { headers }),
+            axios.get('/api/quizzes/other', { headers })
+          );
+        } else {
+          fetches.push(axios.get('/api/quizzes/other', { headers }));
         }
+
+        const results = await Promise.all(fetches);
+
+        let i = 0;
+        if (this.isTeacherOrAdmin) {
+          this.myQuizzes = results[i++].data;
+          this.participatedQuizzes = results[i++].data;
+          this.otherQuizzes = results[i++].data;
+        } else if (this.isStudent) {
+          this.participatedQuizzes = results[i++].data;
+          this.otherQuizzes = results[i++].data;
+        } else {
+          this.otherQuizzes = results[i++].data;
+        }
+
       } catch (err) {
         console.error('Failed to fetch quizzes:', err);
-        this.yourQuizzes = [];
+        this.myQuizzes = [];
+        this.participatedQuizzes = [];
         this.otherQuizzes = [];
       } finally {
         this.loaded = true;
@@ -130,7 +134,5 @@ export default {
   }
 };
 </script>
-
-
 
 <style src="../../style/QuizList.scss" lang="scss" />

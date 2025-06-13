@@ -92,9 +92,9 @@ export default {
 
         if (this.isTeacherOrAdmin) {
           fetches.push(
-            axios.get('/api/quizzes/my1', { headers }),
-            axios.get('/api/quizzes/participated1', { headers }),
-            axios.get('/api/quizzes/other1', { headers })
+            axios.get('/api/quizzes/my', { headers }),
+            axios.get('/api/quizzes/participated', { headers }),
+            axios.get('/api/quizzes/other', { headers })
           );
         } else if (this.isStudent) {
           fetches.push(
